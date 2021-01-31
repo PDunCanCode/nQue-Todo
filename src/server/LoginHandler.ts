@@ -1,11 +1,11 @@
 import { IncomingMessage, ServerResponse } from "http";
 import { resolve } from "path";
 import { HTTP_CODES, HTTP_METHODS } from "../shared/Model";
+import { BaseRequestHandler } from "./BaseRequestHandler";
 import { Account, TokenGenerator } from "./Model";
 
-export class LoginHandler implements Handler {
-  private req: IncomingMessage;
-  private res: ServerResponse;
+export class LoginHandler extends BaseRequestHandler {
+  
   private tokenGenerator: TokenGenerator;
 
   public constructor(
@@ -13,6 +13,7 @@ export class LoginHandler implements Handler {
     res: ServerResponse,
     tokenGenerator: TokenGenerator
   ) {
+    super(req, res);
     this.req = req;
     this.res = res;
     this.tokenGenerator = tokenGenerator;
@@ -50,9 +51,6 @@ private async handlePost() {
         this.res.write('error: ' + error.message)
     }
 }
-  getRequestBody(): Account | PromiseLike<Account> {
-    throw new Error("Method not implemented.");
-  }
-
+  
 
 }

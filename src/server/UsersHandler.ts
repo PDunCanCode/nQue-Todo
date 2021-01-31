@@ -1,4 +1,4 @@
-import { Handler, TokenValidator } from './Model';
+import { TokenValidator } from './Model';
 import { BaseRequestHandler } from "./BaseRequestHandler";
 import { IncomingMessage, ServerResponse } from 'http';
 import { HTTP_METHODS, HTTP_CODES } from '../shared/Model';
