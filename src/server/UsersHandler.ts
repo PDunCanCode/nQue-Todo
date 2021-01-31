@@ -3,6 +3,7 @@ import { BaseRequestHandler } from "./BaseRequestHandler";
 import { IncomingMessage, ServerResponse } from 'http';
 import { HTTP_METHODS, HTTP_CODES } from '../shared/Model';
 import { UsersDBAccess } from '../user/UsersDBAccess';
+import { Utils } from './Utils';
 
 
 export class UsersHandler extends BaseRequestHandler {
@@ -35,3 +36,19 @@ export class UsersHandler extends BaseRequestHandler {
                 break;
         }
     }
+    private async handleGet() {
+        const parsedUrl = Utils.getUrlParameters(this.req.url);
+     if (parsedUrl) {
+        const userId = parsedUrl.query.id
+        if (userId) {
+        const user = await this.usersDBAccess.getUserById(userId as string);
+        if (user) {
+            this.respondJsonObject(HTTP_CODES.OK, user)
+        } else {
+            this.handleNotFound();
+        }
+    }
+}
+
+
+}
