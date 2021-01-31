@@ -4,3 +4,6 @@ Content-Type: : application/json
     "username" : "Paul",
     "password":  "123456"
 }
+
+GET http://localhost:8080/
+Authorization: 

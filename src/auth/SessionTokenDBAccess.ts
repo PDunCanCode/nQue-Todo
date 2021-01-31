@@ -1,6 +1,5 @@
 import Nedb = require('nedb');
 import { SessionToken } from '../server/Model';
-import { logInvocation } from '../Shared/MethodDecorators';
 
 export class SessionTokenDBAccess {
 
