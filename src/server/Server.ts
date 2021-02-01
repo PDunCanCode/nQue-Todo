@@ -2,6 +2,7 @@ import { createServer, IncomingMessage, ServerResponse } from "http";
 import { LoginHandler } from "./LoginHandler";
 import { Utils } from "./Utils";
 import { Authorizer } from "../auth/Authorizer";
+import { UsersHandler } from "./UsersHandler";
 
 export class Server {
   private authorizer: Authorizer = new Authorizer();
@@ -14,6 +15,8 @@ export class Server {
         case "login":
           await new LoginHandler(req, res, this.authorizer).handleRequest();
           break;
+        case "users":
+          await new UsersHandler(req, res, this.authorizer);
 
         default:
           break;

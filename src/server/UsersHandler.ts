@@ -38,19 +38,26 @@ export class UsersHandler extends BaseRequestHandler {
     }
   }
   private async handleGet() {
-    const parsedUrl = Utils.getUrlParameters(this.req.url);
-    if (parsedUrl) {
-      const userId = parsedUrl.query.id;
-      if (userId) {
-        const user = await this.usersDBAccess.getUserById(userId as string);
-        if (user) {
-          this.respondJsonObject(HTTP_CODES.OK, user);
+    const operationAuthorized = await this.operationAuthorized(
+      AccessRight.READ
+    );
+    if (operationAuthorized) {
+      const parsedUrl = Utils.getUrlParameters(this.req.url);
+      if (parsedUrl) {
+        const userId = parsedUrl.query.id;
+        if (userId) {
+          const user = await this.usersDBAccess.getUserById(userId as string);
+          if (user) {
+            this.respondJsonObject(HTTP_CODES.OK, user);
+          } else {
+            this.handleNotFound();
+          }
         } else {
-          this.handleNotFound();
+          this.respondBadRequest("userId not present");
         }
-      } else {
-        this.respondBadRequest("userId not present");
       }
+    } else {
+      this.respondUnauthorized("missing auth");
     }
   }
   public async operationAuthorized(operation: AccessRight): Promise<boolean> {
