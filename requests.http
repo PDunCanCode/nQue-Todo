@@ -2,8 +2,8 @@ POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-    "username": "paul",
-    "password": "password"
+    "username": "user1",
+    "password": "password1"
 }
 ###
 
@@ -20,12 +20,12 @@ Authorization: vjwe9cgpn9n
 
 ###
 
-GET http://localhost:8080/users?name=boo
-Authorization: vjwe9cgpn9n
+GET http://localhost:8080/users?name=user1
+Authorization: 7kosazp0q4n
 
 ###
 PUT http://localhost:8080/users
-Authorization: vjwe9cgpn9n
+Authorization: 7kosazp0q4n
 Content-Type: application/json
 
 {

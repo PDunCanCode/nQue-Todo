@@ -5,7 +5,7 @@ class DbTest {
 }
 
 new DbTest().dbAccess.putUserCredential({
-  username: "paul",
-  password: "password",
+  username: "fakeadmin",
+  password: "eyeforgot",
   accessRights: [0, 1, 2, 3],
 });
