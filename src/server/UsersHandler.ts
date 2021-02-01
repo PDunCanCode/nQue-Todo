@@ -1,7 +1,7 @@
 import { TokenValidator } from "./Model";
 import { BaseRequestHandler } from "./BaseRequestHandler";
 import { IncomingMessage, ServerResponse } from "http";
-import { HTTP_METHODS, HTTP_CODES, AccessRight } from "../shared/Model";
+import { HTTP_METHODS, HTTP_CODES, AccessRight, User } from "../shared/Model";
 import { UsersDBAccess } from "../user/UsersDBAccess";
 import { Utils } from "./Utils";
 
@@ -37,6 +37,16 @@ export class UsersHandler extends BaseRequestHandler {
         break;
     }
   }
+  private async handlePut() {
+    const operationAuthorized = await this.operationAuthorized(
+      AccessRight.CREATE
+    );
+    if (operationAuthorized) {
+      const user: User = await this.getRequestBody();
+      await this.usersDBAccess.putUser(user);
+      this.respondText(HTTP_CODES.CREATED, `user ${user.name} created`);
+    }
+  }
   private async handleGet() {
     const operationAuthorized = await this.operationAuthorized(
       AccessRight.READ
@@ -44,17 +54,23 @@ export class UsersHandler extends BaseRequestHandler {
     if (operationAuthorized) {
       const parsedUrl = Utils.getUrlParameters(this.req.url);
       if (parsedUrl) {
-        const userId = parsedUrl.query.id;
-        if (userId) {
-          const user = await this.usersDBAccess.getUserById(userId as string);
+        if (parsedUrl.query.id) {
+          const user = await this.usersDBAccess.getUserById(
+            parsedUrl.query.id as string
+          );
           if (user) {
             this.respondJsonObject(HTTP_CODES.OK, user);
           } else {
             this.handleNotFound();
           }
-        } else {
-          this.respondBadRequest("userId not present");
+        } else if (parsedUrl.query.name) {
+          const users = await this.usersDBAccess.getUsersByName(
+            parsedUrl.query.name as string
+          );
+          this.respondJsonObject(HTTP_CODES.OK, users);
         }
+      } else {
+        this.respondBadRequest("userId not present");
       }
     } else {
       this.respondUnauthorized("missing auth");
