@@ -1,20 +1,36 @@
 POST http://localhost:8080/login
-Content-Type: : application/json
-{
-    "username" : "Paul",
-    "password":  "123456"
-}
-
-GET http://localhost:8080//users?id=kJvUrzDLMFwOo7Cb
-Authorization: b00sclu3s
-
-PUT http://localhost:8080/users
-Authorization: : b00sclu3s
 Content-Type: application/json
 
 {
-    "age": 22,
-    "email": "Boobalou@gmail.com",
-    "name": "boo",
-    "workingPosition" : 1
+    "username": "paul",
+    "password": "password"
+}
+###
+
+GET http://localhost:8080/systemInfo
+
+###
+
+DELETE  http://localhost:8080/users?id=asd23234
+Authorization: mf9oxjfeugb
+
+###
+GET http://localhost:8080/users?id=6eVMjt5MjH3PbXYA
+Authorization: vjwe9cgpn9n
+
+###
+
+GET http://localhost:8080/users?name=boo
+Authorization: vjwe9cgpn9n
+
+###
+PUT http://localhost:8080/users
+Authorization: vjwe9cgpn9n
+Content-Type: application/json
+
+{
+  "age": 21,
+  "email": "some@otheremail.com",
+  "name": "boo",
+  "workingPosition": 3
 }
