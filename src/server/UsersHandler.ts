@@ -37,6 +37,35 @@ export class UsersHandler extends BaseRequestHandler {
         break;
     }
   }
+  private async handleDelete() {
+    const operationAuthorized = await this.operationAuthorized(
+      AccessRight.DELETE
+    );
+    if (operationAuthorized) {
+      const parsedUrl = Utils.getUrlParameters(this.req.url);
+      if (parsedUrl) {
+        if (parsedUrl.query.id) {
+          const deleteResult = await this.usersDBAccess.deleteUser(
+            parsedUrl.query.id as string
+          );
+          if (deleteResult) {
+            this.respondText(
+              HTTP_CODES.OK,
+              `user ${parsedUrl.query.id} deleted`
+            );
+          } else {
+            this.respondText(
+              HTTP_CODES.NOT_FOUND,
+              `user ${parsedUrl.query.id} was not deleted`
+            );
+          }
+        } else {
+          this.respondBadRequest("missing id in the request");
+        }
+      }
+    }
+  }
+
   private async handlePut() {
     const operationAuthorized = await this.operationAuthorized(
       AccessRight.CREATE
